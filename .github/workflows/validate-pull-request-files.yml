@@ -1,0 +1,24 @@
+name: Validate Entity Package PR
+
+on: [pull_request]
+
+jobs:
+  validate_package_file_name:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Setup Python 3
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+
+      - run: pip3 install -r .github/scripts/python/requirements.txt
+
+      - name: Validate the entity package name
+        run: python3 .github/scripts/python/validate_pull_request.py
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Validate entity packages
+        run: mkdir /tmp/unpack && python3 .github/scripts/python/unpack_entities.py ./entities /tmp/unpack
