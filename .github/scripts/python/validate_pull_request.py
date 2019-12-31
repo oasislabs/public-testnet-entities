@@ -18,9 +18,14 @@ def validate_entity_pull_request(gh, repo, pr_number):
 
     expected_filename = "entities/%s-entity.tar.gz" % pr_creator
 
-    for changed_file in pr.get_files():
-        if changed_file.filename == expected_filename:
-            is_valid = True
+    changed_files = list(pr.get_files())
+    if len(changed_files) > 1:
+        raise InvalidEntityPR(
+            'This PR contains more than an entity change. That is not allowed without explicit review.'
+        )
+
+    if changed_files[0].filename == expected_filename:
+        is_valid = True
 
     if not is_valid:
         raise InvalidEntityPR(

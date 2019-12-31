@@ -3,7 +3,7 @@ name: Check validation scripts
 on: [push]
 
 jobs:
-  build:
+  test_validation_scripts:
     name: Test that the validation scripts work as expected
     runs-on: ubuntu-latest
     steps:
