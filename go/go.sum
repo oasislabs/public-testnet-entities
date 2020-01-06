@@ -247,6 +247,7 @@ github.com/oasislabs/ed25519 v0.0.0-20191122104632-9d9ffc15f526/go.mod h1:xIpCyr
 github.com/oasislabs/oasis-core v0.0.0-20191231212602-3fbbe0b3fc52 h1:yapo7MyP8maNn6X8pasOu3ifkkX32XmZVDWsHy1TmJw=
 github.com/oasislabs/oasis-core/go v0.0.0-20191231212602-3fbbe0b3fc52 h1:GpycfdlXoKZCqG3yHbvcFfOMeC/UDlqgywWotfF7NRE=
 github.com/oasislabs/oasis-core/go v0.0.0-20191231212602-3fbbe0b3fc52/go.mod h1:OLE0OAlxWPocseFJadXRTwZHxN8d1tj3mTlTP7j6Aa8=
+github.com/oasislabs/the-quest-entities v0.0.0-20200106175607-2a07d7382db1 h1:PFMEo0MPJJxZ16YyfaNAjKtL8CX3s8nvlRbN607GSII=
 github.com/oklog/ulid v1.3.1/go.mod h1:CirwcVhetQ6Lv90oh/F+FBtV6XMibvdAFo93nm5qn4U=
 github.com/onsi/ginkgo v1.6.0/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+WWjE=
 github.com/onsi/ginkgo v1.7.0/go.mod h1:lLunBs/Ym6LB5Z9jYTR76FiuTmxDTDusOGeTQH+WWjE=
