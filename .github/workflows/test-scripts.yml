@@ -17,3 +17,11 @@ jobs:
       - run: pip3 install -r .github/scripts/python/requirements.txt
 
       - run: python3 .github/scripts/python/test_unpack_entities.py
+
+      - run: python
+
+      - uses: actions/setup-go@v1
+        with:
+          go-version: '1.13.x'
+
+      - run: cd go/genesis-tools && go test -v ./...
