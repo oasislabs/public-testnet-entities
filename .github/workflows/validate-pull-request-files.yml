@@ -17,7 +17,7 @@ jobs:
         with:
           go-version: '1.13.x'
 
-      - run: cd go/genesis-tools && go build . && cp genesis-tools /usr/local/bin/genesis-tools
+      - run: cd go/genesis-tools && go build .
 
       - run: pip3 install -r .github/scripts/python/requirements.txt
 
