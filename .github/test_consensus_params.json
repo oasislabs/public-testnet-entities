@@ -1,0 +1,15 @@
+{
+    "commission_schedule_rules": {},
+    "debonding_interval": 1,
+    "gas_costs": {
+        "add_escrow": 1000,
+        "burn": 1000,
+        "reclaim_escrow": 1000,
+        "transfer": 1000
+    },
+    "min_delegation": "10000000000000000000",
+    "thresholds": {
+        "0": "100000000000000000000",
+        "1": "100000000000000000000"
+    }
+}
