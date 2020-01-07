@@ -13,6 +13,12 @@ jobs:
         with:
           python-version: '3.x'
 
+      - uses: actions/setup-go@v1
+        with:
+          go-version: '1.13.x'
+
+      - run: cd go/genesis-tools && go build . && cp genesis-tools /usr/local/bin/genesis-tools
+
       - run: pip3 install -r .github/scripts/python/requirements.txt
 
       - name: Validate the entity package name
@@ -22,3 +28,15 @@ jobs:
 
       - name: Validate entity packages
         run: mkdir /tmp/unpack && python3 .github/scripts/python/unpack_entities.py ./entities /tmp/unpack
+
+      - name: Copy consensus params into the temp directory
+        run: cp .github/test_consensus_params.json /tmp/unpack/consensus_params.json
+
+      - name: Generate a staking genesis
+        run:  genesis-tools staking_genesis --staking.entities_dir /tmp/unpack --log.level debug --staking.faucet.address DEADBEEFD5SiQGAHSXUMnJpvdounKAHayK4zY118uo= --staking.faucet.amount 2000000000 --staking.default_self_escrow 500 --output-path /tmp/staking.json
+
+      - name: Generate a genesis document
+        run: python3 .github/scripts/python/generate_genesis.py /tmp/unpack
+
+      - name: Sanity check genesis file
+        run: oasis-node genesis check --genesis.file /tmp/genesis.json
