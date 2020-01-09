@@ -21,17 +21,17 @@ type Entities interface {
 	ResolveEntity(name string) (*entity.Entity, error)
 }
 
-// EntitiesDirectory is a directory of unpacked entities packages.
+// EntitiesDirectory is a set of directories of unpacked entities packages.
 type EntitiesDirectory struct {
-	path string
+	paths []string
 
 	// A map of Entity Names to the Entity object
 	entities map[string]*entity.Entity
 }
 
 // LoadEntitiesDirectory loads a directory of unpacked entity packages.
-func LoadEntitiesDirectory(dirPath string) (*EntitiesDirectory, error) {
-	dir := &EntitiesDirectory{path: dirPath}
+func LoadEntitiesDirectory(dirPaths []string) (*EntitiesDirectory, error) {
+	dir := &EntitiesDirectory{paths: dirPaths}
 
 	dir.Load()
 
@@ -50,29 +50,38 @@ func (e *EntitiesDirectory) All() map[string]*entity.Entity {
 	return e.entities
 }
 
+func (e *EntitiesDirectory) Load() error {
+	e.entities = make(map[string]*entity.Entity)
+	for _, dirPath := range e.paths {
+		err := e.loadDir(dirPath)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // Load loads a directory of entities. This should a directory of unpacked
 // entity packages.
-func (e *EntitiesDirectory) Load() error {
-	files, err := ioutil.ReadDir(e.path)
+func (e *EntitiesDirectory) loadDir(dirPath string) error {
+	files, err := ioutil.ReadDir(dirPath)
 	if err != nil {
 		logger.Error("failed to load the entities directory",
 			"err", err,
 		)
 	}
-	entities := make(map[string]*entity.Entity)
 	for _, fileInfo := range files {
 		// Only process directories.
 		if !fileInfo.IsDir() {
 			continue
 		}
 		entityName := fileInfo.Name()
-		ent, err := e.loadEntityDir(entityName)
+		ent, err := e.loadEntityDir(dirPath, entityName)
 		if err != nil {
 			return err
 		}
-		entities[entityName] = ent
+		e.entities[entityName] = ent
 	}
-	e.entities = entities
 	return nil
 }
 
@@ -85,8 +94,8 @@ func (e *EntitiesDirectory) ResolveEntity(name string) (*entity.Entity, error) {
 	return ent, nil
 }
 
-func (e *EntitiesDirectory) loadEntityDir(entityName string) (*entity.Entity, error) {
-	entityGenesisPath := path.Join(e.path, entityName, "entity/entity_genesis.json")
+func (e *EntitiesDirectory) loadEntityDir(dirPath string, entityName string) (*entity.Entity, error) {
+	entityGenesisPath := path.Join(dirPath, entityName, "entity/entity_genesis.json")
 	logger.Debug("loading entity directory", "dir", entityGenesisPath)
 	if !isFile(entityGenesisPath) {
 		return nil, fmt.Errorf("Entity for \"%s\" does not exist", entityName)

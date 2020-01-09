@@ -18,7 +18,7 @@ const (
 	cfgFaucetAmount            = "staking.faucet.amount"
 	cfgTotalSupply             = "staking.total_supply"
 	cfgPrecisionConstant       = "staking.precision_constant"
-	cfgEntitiesDirectoryPath   = "staking.entities_dir"
+	cfgEntitiesDirectoryPaths  = "staking.entities_dir"
 	cfgConsensusParametersPath = "staking.consensus_params"
 	cfgDefaultFundingAmount    = "staking.default_funding"
 	cfgDefaultSelfEscrowAmount = "staking.default_self_escrow"
@@ -48,7 +48,7 @@ func doStakingGenesis(cmd *cobra.Command, args []string) {
 		FaucetAmount:            viper.GetInt64(cfgFaucetAmount),
 		TotalSupply:             viper.GetInt64(cfgTotalSupply),
 		PrecisionConstant:       viper.GetInt64(cfgPrecisionConstant),
-		EntitiesDirectoryPath:   viper.GetString(cfgEntitiesDirectoryPath),
+		EntitiesDirectoryPaths:  viper.GetStringSlice(cfgEntitiesDirectoryPaths),
 		ConsensusParametersPath: viper.GetString(cfgConsensusParametersPath),
 		DefaultFundingAmount:    viper.GetInt64(cfgDefaultFundingAmount),
 		DefaultSelfEscrowAmount: viper.GetInt64(cfgDefaultSelfEscrowAmount),
@@ -64,11 +64,11 @@ func doStakingGenesis(cmd *cobra.Command, args []string) {
 		os.Exit(1)
 	}
 
-	if options.EntitiesDirectoryPath == "" {
+	if len(options.EntitiesDirectoryPaths) < 1 {
 		logger.Error("must define an entities directory path")
 		os.Exit(1)
 	}
-	entitiesDir, err := stakinggenesis.LoadEntitiesDirectory(options.EntitiesDirectoryPath)
+	entitiesDir, err := stakinggenesis.LoadEntitiesDirectory(options.EntitiesDirectoryPaths)
 	if err != nil {
 		logger.Error("Cannot load entities",
 			"err", err,
@@ -102,7 +102,7 @@ func RegisterStakingGenesisCmd(parentCmd *cobra.Command) {
 	stakingGenesisFlags.Int64(cfgTotalSupply, defaultTotalSupply, "Total supply of tokens (in whole tokens)")
 	stakingGenesisFlags.Int64(cfgPrecisionConstant, defaultPrecisionConstant,
 		"the precision constant for a single token defaults to 10^18")
-	stakingGenesisFlags.String(cfgEntitiesDirectoryPath, "", "a directory entities")
+	stakingGenesisFlags.StringSlice(cfgEntitiesDirectoryPaths, []string{}, "a directory entities")
 	stakingGenesisFlags.String(cfgConsensusParametersPath, "",
 		"a consensus params json file (defaults to using ./consensus_params.json relative to entities directory)")
 	stakingGenesisFlags.Int64(cfgDefaultFundingAmount, 0, "Default funding amount")

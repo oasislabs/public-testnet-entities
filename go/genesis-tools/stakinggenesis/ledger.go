@@ -3,7 +3,6 @@ package stakinggenesis
 import (
 	"encoding/json"
 	"io/ioutil"
-	"path"
 
 	"github.com/oasislabs/oasis-core/go/common/crypto/signature"
 	"github.com/oasislabs/oasis-core/go/common/entity"
@@ -17,7 +16,7 @@ type GenesisOptions struct {
 	FaucetAmount              int64
 	TotalSupply               int64
 	PrecisionConstant         int64
-	EntitiesDirectoryPath     string
+	EntitiesDirectoryPaths    []string
 	ConsensusParametersPath   string
 	ConsensusParametersLoader func() staking.ConsensusParameters
 	DefaultFundingAmount      int64
@@ -34,10 +33,6 @@ type genesisCreator struct {
 // Create creates a staking ledger file to be used in a genesis
 // document. This handles proper accounting of token amounts.
 func Create(options GenesisOptions) (*staking.Genesis, error) {
-	if options.ConsensusParametersPath == "" {
-		options.ConsensusParametersPath = path.Join(options.EntitiesDirectoryPath, "consensus_params.json")
-	}
-
 	creator := genesisCreator{options: options}
 	return creator.create()
 }
