@@ -21,8 +21,8 @@
   "disable_transfers": true,
   "disable_delegation": true,
   "undisable_transfers_from": {
-    "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=": true, // faucet address here
-    "AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=": true // txclient address here
+    "uMcicpJEWJxqNSQRTaLeHsQrooxtVXv70sqmYPP2R9s=": true,
+    "dfWu5lZH4MPjCGh4zHxZ1jqCSg0wc6+ZVoYH8L19Kco=": true
   },
   "signing_reward_threshold_numerator": 3,
   "signing_reward_threshold_denominator": 4,
