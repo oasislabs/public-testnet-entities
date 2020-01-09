@@ -1,15 +1,35 @@
 {
-    "commission_schedule_rules": {},
-    "debonding_interval": 1,
-    "gas_costs": {
-        "add_escrow": 1000,
-        "burn": 1000,
-        "reclaim_escrow": 1000,
-        "transfer": 1000
-    },
-    "min_delegation": "10000000000000000000",
-    "thresholds": {
-        "0": "100000000000000000000",
-        "1": "100000000000000000000"
+  "commission_schedule_rules": {},
+  "debonding_interval": 10,
+  "reward_schedule": [
+    {
+      "until": 18446744073709552000,
+      "scale": "7"
     }
+  ],
+  "gas_costs": {
+    "add_escrow": 1000,
+    "burn": 1000,
+    "reclaim_escrow": 1000,
+    "transfer": 1000
+  },
+  "min_delegation": "10000000000",
+  "thresholds": {
+    "0": "100000000000",
+    "1": "100000000000"
+  },
+  "disable_transfers": true,
+  "disable_delegation": true,
+  "undisable_transfers_from": {
+    "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=": true, // faucet address here
+    "AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=": true // txclient address here
+  },
+  "signing_reward_threshold_numerator": 3,
+  "signing_reward_threshold_denominator": 4,
+  "slashing": {
+    "0": {
+      "amount": "100000000000",
+      "freeze_interval": 18446744073709552000
+    }
+  }
 }
