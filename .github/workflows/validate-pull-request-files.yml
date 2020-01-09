@@ -31,12 +31,13 @@ jobs:
         run: mkdir /tmp/unpack && python3 .github/scripts/python/unpack_entities.py ./entities /tmp/unpack
 
       - name: Copy consensus params into the temp directory
-        run: cp .github/test_consensus_params.json /tmp/unpack/consensus_params.json
+        run: cp .github/test_consensus_params.json /tmp/consensus_params.json
 
       - name: Generate a pre-production staking genesis
         run: >-
           /tmp/genesis-tools staking_genesis
           --staking.entities_dir /tmp/unpack
+          --staking.consensus_params /tmp/consensus_params.json
           --log.level debug
           --staking.faucet.address AAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBB=
           --staking.faucet.amount 2000000000
@@ -64,16 +65,17 @@ jobs:
       - name: Validate test only entity packages
         run: mkdir /tmp/test_only_unpack && python3 .github/scripts/python/unpack_entities.py ./test_only_entities /tmp/test_only_unpack
 
-      - name: Generate a pre-production staking genesis
-				run: >-
-					/tmp/genesis-tools staking_genesis
-					--staking.entities_dir /tmp/unpack
-					--staking.entities_dir /tmp/test_only_unpack
-					--log.level debug
-					--staking.faucet.address AAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBB=
-					--staking.faucet.amount 2000000000
-					--staking.default_self_escrow 500
-					--output-path /tmp/staking.preprod.json
+      - name: Generate a test only staking genesis
+        run: >-
+          /tmp/genesis-tools staking_genesis
+          --staking.entities_dir /tmp/unpack
+          --staking.entities_dir /tmp/test_only_unpack
+          --staking.consensus_params /tmp/consensus_params.json
+          --log.level debug
+          --staking.faucet.address AAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBB=
+          --staking.faucet.amount 2000000000
+          --staking.default_self_escrow 500
+          --output-path /tmp/staking.preprod.json
 
       - name: Generate a test only genesis document
         run: OASIS_TEST_ONLY=true python3 .github/scripts/python/generate_genesis.py /tmp/unpack /tmp/test_only_unpack

@@ -45,7 +45,7 @@ def main():
         '--consensus.tendermint.max_tx_size', '32kb',
         '--consensus.backend', 'tendermint',
         '--scheduler.max_validators', '100',
-        '--scheduler.max_per_entity', '1',
+        '--scheduler.max_validators_per_entity', '1',
         '--scheduler.min_validators', '3',
     ]
 
