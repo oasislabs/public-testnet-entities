@@ -4,24 +4,29 @@ import subprocess
 
 
 def add_entities_from_directory(genesis_command, entity_dir, add_nodes):
-    for entity_name in os.listdir(unpacked_entities_path):
-        if os.path.isfile(os.path.join(unpacked_entities_path, entity_name)):
+    for entity_name in os.listdir(entity_dir):
+        if os.path.isfile(os.path.join(entity_dir, entity_name)):
             continue
-        genesis_command.append([
-            '--entity', os.path.join(unpacked_entities_path,
+        genesis_command.extend([
+            '--entity', os.path.join(entity_dir,
                                      entity_name, 'entity/entity_genesis.json'),
         ])
 
         if add_nodes:
-            genesis_command.append(
-                '--node', os.path.join(unpacked_entities_path,
+            genesis_command.extend([
+                '--node', os.path.join(entity_dir,
                                        entity_name, 'node/node_genesis.json'),
-            )
+            ])
 
 
 def main():
     # Find all of the entity_genesis.json files and node_genesis.json files
     unpacked_entities_path = os.path.abspath(sys.argv[1])
+    test_entities_path = ""
+    try:
+        test_entities_path = os.path.abspath(sys.argv[2])
+    except IndexError:
+        pass
 
     # Hacky overrides for running locally.
     output_path = os.environ.get('GENESIS_OUTPUT_PATH', '/tmp/genesis.json')

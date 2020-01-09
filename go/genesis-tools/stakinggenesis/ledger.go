@@ -49,28 +49,33 @@ func (g *genesisCreator) create() (*staking.Genesis, error) {
 	g.precisionConstant = quantity.NewQuantity()
 	_ = g.precisionConstant.FromInt64(g.options.PrecisionConstant)
 
+	logger.Debug("Setup total supply")
 	// Setup total supply
 	totalSupply := g.toStakingQuantity(g.options.TotalSupply)
 	g.genesis.TotalSupply = *totalSupply
 
+	logger.Debug("Loading Consensus Params")
 	// Setup Consensus Parameters
 	err := g.loadConsensusParameters()
 	if err != nil {
 		return nil, err
 	}
 
+	logger.Debug("Setting up the faucet")
 	// Setup Faucet
 	err = g.setupFaucet()
 	if err != nil {
 		return nil, err
 	}
 
+	logger.Debug("Loading all entitiy")
 	// TODO Add a way to load a custom ledger amount
 	// Load all entities and fund them
 	for _, ent := range g.options.Entities.All() {
 		g.setupEntity(ent, g.options.DefaultFundingAmount, g.options.DefaultSelfEscrowAmount)
 	}
 
+	logger.Debug("Calculate the common pool amount")
 	err = g.calculateCommonPool()
 	if err != nil {
 		return nil, err
