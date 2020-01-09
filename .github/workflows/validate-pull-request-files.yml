@@ -51,7 +51,7 @@ jobs:
         run: cd /tmp && tar xvf oasis-node.tar.gz && chmod +x /tmp/oasis-node
 
       - name: Generate a "pre-production" genesis document
-        run: python3 .github/scripts/python/generate_genesis.py /tmp/unpack
+        run: STAKING_GENESIS_PATH=/tmp/staking.preprod.json python3 .github/scripts/python/generate_genesis.py /tmp/unpack
 
       - name: Sanity check genesis file
         run: /tmp/oasis-node genesis check --genesis.file /tmp/genesis.preprod.json
@@ -75,10 +75,10 @@ jobs:
           --staking.faucet.address AAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBB=
           --staking.faucet.amount 2000000000
           --staking.default_self_escrow 500
-          --output-path /tmp/staking.preprod.json
+          --output-path /tmp/staking.test_only.json
 
       - name: Generate a test only genesis document
-        run: OASIS_TEST_ONLY=true python3 .github/scripts/python/generate_genesis.py /tmp/unpack /tmp/test_only_unpack
+        run: STAKING_GENESIS_PATH=/tmp/staking.test_only.json OASIS_TEST_ONLY=true python3 .github/scripts/python/generate_genesis.py /tmp/unpack /tmp/test_only_unpack
 
       - name: Sanity check genesis file
         run: /tmp/oasis-node genesis check --genesis.file /tmp/genesis.test_only.json
