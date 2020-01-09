@@ -41,7 +41,7 @@ jobs:
           --log.level debug
           --staking.faucet.address AAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBB=
           --staking.faucet.amount 2000000000
-          --staking.default_self_escrow 500
+          --staking.default_self_escrow 10000
           --output-path /tmp/staking.preprod.json
 
       - name: Download oasis-node
@@ -72,9 +72,9 @@ jobs:
           --staking.entities_dir /tmp/test_only_unpack
           --staking.consensus_params /tmp/consensus_params.json
           --log.level debug
-          --staking.faucet.address AAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBB=
+          --staking.faucet.address uMcicpJEWJxqNSQRTaLeHsQrooxtVXv70sqmYPP2R9s=
           --staking.faucet.amount 2000000000
-          --staking.default_self_escrow 500
+          --staking.default_self_escrow 10000
           --output-path /tmp/staking.test_only.json
 
       - name: Generate a test only genesis document
