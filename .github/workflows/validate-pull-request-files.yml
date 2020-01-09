@@ -33,8 +33,15 @@ jobs:
       - name: Copy consensus params into the temp directory
         run: cp .github/test_consensus_params.json /tmp/unpack/consensus_params.json
 
-      - name: Generate a staking genesis
-        run:  /tmp/genesis-tools staking_genesis --staking.entities_dir /tmp/unpack --log.level debug --staking.faucet.address AAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBB= --staking.faucet.amount 2000000000 --staking.default_self_escrow 500 --output-path /tmp/staking.json
+      - name: Generate a pre-production staking genesis
+        run: >-
+          /tmp/genesis-tools staking_genesis
+          --staking.entities_dir /tmp/unpack
+          --log.level debug
+          --staking.faucet.address AAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBB=
+          --staking.faucet.amount 2000000000
+          --staking.default_self_escrow 500
+          --output-path /tmp/staking.preprod.json
 
       - name: Download oasis-node
         run: curl -Lo /tmp/oasis-node.tar.gz https://github.com/oasislabs/the-quest-entities/releases/download/DO_NOT_USE/oasis-node-linux-amd64.tar.gz
@@ -46,25 +53,36 @@ jobs:
         run: python3 .github/scripts/python/generate_genesis.py /tmp/unpack
 
       - name: Sanity check genesis file
-        run: /tmp/oasis-node genesis check --genesis.file /tmp/genesis.json
+        run: /tmp/oasis-node genesis check --genesis.file /tmp/genesis.preprod.json
 
       - name: Upload the "pre-production" genesis document
         uses: actions/upload-artifact@v1
         with:
-          name: genesis_pre_prod.json
-          path: /tmp/genesis.json
+          name: genesis.preprod.json
+          path: /tmp/genesis.preprod.json
 
-      - name: Validate entity packages
-        run: mkdir /tmp/unpack && python3 .github/scripts/python/unpack_entities.py ./test_only_entities /tmp/unpack
+      - name: Validate test only entity packages
+        run: mkdir /tmp/test_only_unpack && python3 .github/scripts/python/unpack_entities.py ./test_only_entities /tmp/test_only_unpack
+
+      - name: Generate a pre-production staking genesis
+				run: >-
+					/tmp/genesis-tools staking_genesis
+					--staking.entities_dir /tmp/unpack
+					--staking.entities_dir /tmp/test_only_unpack
+					--log.level debug
+					--staking.faucet.address AAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBB=
+					--staking.faucet.amount 2000000000
+					--staking.default_self_escrow 500
+					--output-path /tmp/staking.preprod.json
 
       - name: Generate a test only genesis document
         run: OASIS_TEST_ONLY=true python3 .github/scripts/python/generate_genesis.py /tmp/unpack /tmp/test_only_unpack
 
       - name: Sanity check genesis file
-        run: /tmp/oasis-node genesis check --genesis.file /tmp/genesis.json
+        run: /tmp/oasis-node genesis check --genesis.file /tmp/genesis.test_only.json
 
       - name: Upload the "test_only" genesis document
         uses: actions/upload-artifact@v1
         with:
-          name: genesis_test_only.json
-          path: /tmp/genesis.json
+          name: genesis.test_only.json
+          path: /tmp/genesis.test_only.json
