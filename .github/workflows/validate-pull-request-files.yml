@@ -51,7 +51,7 @@ jobs:
         run: cd /tmp && tar xvf oasis-node.tar.gz && chmod +x /tmp/oasis-node
 
       - name: Generate a "pre-production" genesis document
-        run: STAKING_GENESIS_PATH=/tmp/staking.preprod.json python3 .github/scripts/python/generate_genesis.py /tmp/unpack
+        run: GENESIS_OUTPUT_PATH=/tmp/genesis.preprod.json STAKING_GENESIS_PATH=/tmp/staking.preprod.json python3 .github/scripts/python/generate_genesis.py /tmp/unpack
 
       - name: Sanity check genesis file
         run: /tmp/oasis-node genesis check --genesis.file /tmp/genesis.preprod.json
@@ -78,7 +78,7 @@ jobs:
           --output-path /tmp/staking.test_only.json
 
       - name: Generate a test only genesis document
-        run: STAKING_GENESIS_PATH=/tmp/staking.test_only.json OASIS_TEST_ONLY=true python3 .github/scripts/python/generate_genesis.py /tmp/unpack /tmp/test_only_unpack
+        run: GENESIS_OUTPUT_PATH=/tmp/genesis.test_only.json STAKING_GENESIS_PATH=/tmp/staking.test_only.json OASIS_TEST_ONLY=true python3 .github/scripts/python/generate_genesis.py /tmp/unpack /tmp/test_only_unpack
 
       - name: Sanity check genesis file
         run: /tmp/oasis-node genesis check --genesis.file /tmp/genesis.test_only.json
