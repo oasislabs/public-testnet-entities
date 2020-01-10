@@ -1,7 +1,6 @@
 from unpack_entities import unpack_entities, InvalidEntitiesDetected
 import unittest
 import os
-import sys
 import shutil
 import tempfile
 
