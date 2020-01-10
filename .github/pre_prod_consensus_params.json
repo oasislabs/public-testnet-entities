@@ -3,7 +3,7 @@
   "debonding_interval": 10,
   "reward_schedule": [
     {
-      "until": 1844674407370955200,
+      "until": 18446744073709551615,
       "scale": "7"
     }
   ],
@@ -29,7 +29,7 @@
   "slashing": {
     "0": {
       "amount": "100000000000",
-      "freeze_interval": 1844674407370955200
+      "freeze_interval": 18446744073709551615
     }
   }
 }
