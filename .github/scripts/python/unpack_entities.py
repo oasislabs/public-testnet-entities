@@ -16,6 +16,12 @@ EXPECTED_FILES = [
     'node/node_genesis.json',
 ]
 
+VALID_TAR_MEMBER_NAMES = [
+    'entity'
+    'node'
+]
+VALID_TAR_MEMBER_NAMES.extend(EXPECTED_FILES)
+
 logger = logging.getLogger('unpack_entities')
 
 
@@ -43,7 +49,14 @@ def unpack_entities(src_entities_dir_path, dest_entities_dir_path):
 
             package = tarfile.open(os.path.join(src_entities_dir_path,
                                                 filename))
-            package.extractall(unpacked_entity_dir_path)
+            members_to_extract = []
+            for member in package.getmembers():
+                if member.name in VALID_TAR_MEMBER_NAMES:
+                    members_to_extract.append(member)
+
+            package.extractall(unpacked_entity_dir_path,
+                               members=members_to_extract)
+            package.close()
 
             if not validate_entity_package(unpacked_entity_dir_path):
                 invalid_entity_packages.append(entity_owner)
