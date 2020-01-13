@@ -22,7 +22,8 @@
   "disable_delegation": true,
   "undisable_transfers_from": {
     "uMcicpJEWJxqNSQRTaLeHsQrooxtVXv70sqmYPP2R9s=": true,
-    "dfWu5lZH4MPjCGh4zHxZ1jqCSg0wc6+ZVoYH8L19Kco=": true
+    "dfWu5lZH4MPjCGh4zHxZ1jqCSg0wc6+ZVoYH8L19Kco=": true,
+    "OSo8hvkfyqypYniWWlVhikiVYQJC7EBsUdczBdpAjIs=": true
   },
   "signing_reward_threshold_numerator": 3,
   "signing_reward_threshold_denominator": 4,
